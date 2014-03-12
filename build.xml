@@ -1,0 +1,76 @@
+<project name="csRegs" default="compile" basedir=".">
+
+  <property name="build.compiler" 	value="modern"/>
+  <property name="src" 				value="src"/>
+  <property name="BUILD" 			value="build"/>
+  <property name="classes" 			value="${BUILD}/classes"/>
+  <property name="tarballFileName" 	value="meng_lingjie_assign1.tar.gz"/>
+  <property name="arg0" 			value="dataFile"/>
+  <property name="arg1"		 		value="3"/>
+  <property name="arg2" 			value="searchFile"/>
+  <property name="arg3" 			value="5"/>
+  <property name="arg4" 			value="4"/>
+
+  <target name="compile"
+          depends="csRegs"/>
+
+  <target name="clean">
+       <delete dir="${BUILD}"/>
+       <delete file="./${tarballFileName}" quiet="true"/>
+  </target>
+
+
+
+  <!-- Prepare target directories -->
+  <target name="prepare">
+        <mkdir dir="${BUILD}"/>
+        <mkdir dir="${classes}"/>
+  </target>
+
+
+  <!-- ** means all subdirectories as well -->
+  <!-- * means all files in the current directory -->
+  <!-- for just java files use *.java -->
+
+  <target name="csRegs" depends="prepare">
+    <javac srcdir="${src}"
+           includes="csRegs/**"
+           excludes="**/package.html"
+           destdir="${classes}"
+           classpath="${classes}"
+           debug="on"
+           optimize="on"
+           deprecation="off"/>
+  </target>
+
+  <target name="jar" depends="compile">
+        <mkdir dir="${BUILD}/jar"/>
+        <jar destfile="${BUILD}/jar/csRegs.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="csRegs.driver.Driver"/>
+            </manifest>
+        </jar>
+  </target>
+
+  <target name="tar">
+  <tar destfile="./${tarballFileName}"
+       basedir="." compression="gzip"
+       includes="${src}/**, build.xml, README.txt, ${arg0}, ${arg2}"/>
+  </target>
+
+
+  <target name="run" depends="jar">
+        <java jar="${BUILD}/jar/csRegs.jar"  fork="true">
+	  		<arg value="${arg0}"/>
+         	<arg value="${arg1}"/>
+	  		<arg value="${arg2}"/>
+          	<arg value="${arg3}"/>
+          	<arg value="${arg4}"/>
+		</java>
+  </target>
+
+  <target name="javadoc" >
+      <mkdir dir="${BUILD}/javadoc"/>
+      <javadoc sourcepath="${src}" destdir="${BUILD}/javadoc" locale="en_US"/>
+  </target>
+</project>
