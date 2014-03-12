@@ -22,7 +22,7 @@ public class ServerDriver {
     public static void main(String[] args) throws IOException {
     	boolean quitLoop = false;
     	Checker checker = new PortChecker();
-    	int port = checker.check("10000");
+    	int port = checker.check(args[0]);
     	ThreadPool threadPool = ThreadPool.getInstance();
 		Scanner menu = new Scanner(System.in);
 		Scanner scanName = new Scanner(System.in);
